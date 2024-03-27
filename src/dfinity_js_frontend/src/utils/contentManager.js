@@ -52,6 +52,13 @@ export async function getContents() {
   }
 }
 
+// getAddressFromPrincipal
+export async function getAddressFromPrincipal(principal) {
+  return await window.canister.contentManager.getAddressFromPrincipal(
+    principal
+  );
+}
+
 export async function subscribe(contentId, amount) {
   const amountInt = parseInt(amount, 10);
   const contentManagerCanister = window.canister.contentManager;

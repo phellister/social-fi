@@ -10,12 +10,16 @@ import { login, logout as destroy } from "./utils/auth";
 import { balance as principalBalance } from "./utils/ledger";
 import Cover from "./components/utils/Cover";
 import { Notification } from "./components/utils/Notifications";
+import { getAddressFromPrincipal } from "./utils/contentManager";
+import { Principal } from "@dfinity/principal";
 
 const App = function AppWrapper() {
   const isAuthenticated = window.auth.isAuthenticated;
   const principal = window.auth.principalText;
+  const principalAcc = Principal.from(principal);
 
   const [balance, setBalance] = useState("0");
+  const [address, setAddress] = useState("");
 
   const getBalance = useCallback(async () => {
     if (isAuthenticated) {
@@ -23,8 +27,15 @@ const App = function AppWrapper() {
     }
   });
 
+  const getAddress = useCallback(async () => {
+    if (isAuthenticated) {
+      setAddress(await getAddressFromPrincipal(principalAcc));
+    }
+  });
+
   useEffect(() => {
     getBalance();
+    getAddress();
   }, [getBalance]);
 
   return (
@@ -49,6 +60,7 @@ const App = function AppWrapper() {
               <Nav.Item>
                 <Wallet
                   principal={principal}
+                  address={address}
                   balance={balance}
                   symbol={"ICP"}
                   isAuthenticated={isAuthenticated}

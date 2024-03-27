@@ -1,14 +1,7 @@
 import React from "react";
 import { Dropdown, Stack } from "react-bootstrap";
 
-const Wallet = ({
-  principal,
-  address,
-  balance,
-  symbol,
-  isAuthenticated,
-  destroy,
-}) => {
+const Wallet = ({ principal, balance, symbol, isAuthenticated, destroy }) => {
   if (isAuthenticated) {
     return (
       <>
@@ -27,14 +20,6 @@ const Wallet = ({
               <Stack direction="horizontal" gap={2}>
                 <i className="bi bi-person-circle fs-4" />
                 <span className="font-monospace">{principal}</span>
-              </Stack>
-            </Dropdown.Item>
-
-            <Dropdown.Divider />
-            <Dropdown.Item>
-              <Stack direction="horizontal" gap={2}>
-                <i className="bi bi-person-circle fs-4" />
-                <span className="font-monospace">{address}</span>
               </Stack>
             </Dropdown.Item>
 
