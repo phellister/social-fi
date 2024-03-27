@@ -91,7 +91,7 @@ where:
 - `--memo` is some correlation id that can be set to identify some particular transactions (we use that in the eventManager canister).
 - `--icp` is the transfer amount
 - `--fee` is the transaction fee. In this case it's 0 because we make this transfer as the minter idenity thus this transaction is of type MINT, not TRANSFER.
-- `<ADDRESS>` is the address of the recipient. To get the address from the principal, you can use the helper function from the eventManager canister - `getAddressFromPrincipal(principal: Principal)`, it can be called via the Candid UI.
+- `<ADDRESS>` is the address of the recipient. To get the address from the principal, you can get it directly from the wallet icon top right or use the helper function from the eventManager canister - `getAddressFromPrincipal(principal: Principal)`, it can be called via the Candid UI.
 
 ### Internet identity canister
 
