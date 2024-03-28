@@ -32,7 +32,7 @@ The provided code is an implementation of a backend system for managing content 
 - **getArtists**: Retrieves all artists along with their associated content.
 - **getArtist**: Retrieves a specific artist by their ID.
 - **updateArtist**: Updates the details of an existing artist.
-- **createReservePay**: Initiates a subscription reservation for a content item. It reduces the available units of the content and adds the reserved subscription to the pending subscriptions map.
+- **createSubscriptionPay**: Initiates a subscription reservation for a content item. It reduces the available units of the content and adds the reserved subscription to the pending subscriptions map.
 - **completeSubscription**: Completes a subscription transaction by verifying the subscription details and updating the subscription status. It also persists the subscription details for future reference.
 - **verifySubscription**: Verifies a subscription transaction by checking the transaction details against the provided parameters.
 - **getAddressFromPrincipal**: Retrieves the address from the principal for use in subscription transactions.

@@ -5,7 +5,7 @@ import { Button, Modal, Form, FloatingLabel } from "react-bootstrap";
 const UpdateContent = ({ content, save }) => {
   const [description, setDescription] = useState("");
   const [mediaType, setMediaType] = useState("");
-  const [cover, setcover] = useState("");
+  const [cover, setCover] = useState("");
   const [subscriptionFee, setSubscriptionFee] = useState(0);
   const isFormFilled = () =>
     mediaType && cover && description && subscriptionFee;
@@ -39,27 +39,23 @@ const UpdateContent = ({ content, save }) => {
                 type="text"
                 placeholder="cover"
                 onChange={(e) => {
-                  setcover(e.target.value);
+                  setCover(e.target.value);
                 }}
               />
             </FloatingLabel>
 
             <FloatingLabel
               controlId="mediaType"
-              label="Is Tokenized"
+              label="Media type"
               className="mb-3"
             >
-              <select
+              <Form.Control
+                type="text"
+                placeholder="cover"
                 onChange={(e) => {
                   setMediaType(e.target.value);
                 }}
-                className="form-select"
-                aria-label="Default select example"
-              >
-                <option defaultValue="">select</option>
-                <option value={"true"}>True</option>
-                <option value={"false"}>False</option>
-              </select>
+              />
             </FloatingLabel>
             <FloatingLabel
               controlId="inputDescription"

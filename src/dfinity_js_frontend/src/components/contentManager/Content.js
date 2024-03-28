@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Card, Col, Badge, Stack, Button } from "react-bootstrap";
 import { Principal } from "@dfinity/principal";
-import Subscribe from "./Subscribe";
 import UpdateContent from "./UpdateContent";
 
 const Content = ({ content, subscribe, update, like }) => {
@@ -24,6 +23,7 @@ const Content = ({ content, subscribe, update, like }) => {
   } = content;
 
   const intSubscriptionFee = Number(subscriptionFee / BigInt(10 ** 8));
+  const intLikes = Number(likes);
 
   const principal = window.auth.principalText;
   const isOwnersContent = Principal.from(content.owner).toText() === principal;
@@ -40,10 +40,10 @@ const Content = ({ content, subscribe, update, like }) => {
               Fee: {intSubscriptionFee} ICP
             </Badge>
             <Badge bg="secondary" className="ms-auto">
-              {likes} Likes
+              {intLikes} Likes
             </Badge>
             <Badge bg="secondary" className="ms-auto">
-              {subscriptions} Subs
+              {Number(subscriptions)} Subs
             </Badge>
             {isOwnersContent ? (
               <UpdateContent content={content} save={update} />
@@ -82,7 +82,7 @@ const Content = ({ content, subscribe, update, like }) => {
           <Card.Text className="flex-grow-1">updatedAt: {updatedAt}</Card.Text>
           <Button
             onClick={() => {
-              subscribe(content.id, unitsInt);
+              subscribe(content.id);
             }}
             variant="outline-dark"
             className="w-100 py-3"

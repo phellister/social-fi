@@ -6,8 +6,9 @@ const UpdateArtist = ({ artist, save }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [bio, setBio] = useState("");
 
-  const isFormFilled = () => name && phone && email;
+  const isFormFilled = () => name && bio && phone && email;
 
   const [show, setShow] = useState(false);
 
@@ -18,7 +19,7 @@ const UpdateArtist = ({ artist, save }) => {
     <>
       <button
         onClick={handleShow}
-        className="btn btn-ouline-warning rounded-pill"
+        className="btn btn-outline-warning rounded-pill"
         style={{ width: "8rem" }}
       >
         <i className="bi bi-pencil-square "></i> Update
@@ -68,6 +69,16 @@ const UpdateArtist = ({ artist, save }) => {
                 }}
               />
             </FloatingLabel>
+            <FloatingLabel controlId="inputBio" label="Bio" className="mb-3">
+              <Form.Control
+                as="textarea"
+                style={{ height: "80px" }}
+                onChange={(e) => {
+                  setBio(e.target.value);
+                }}
+                placeholder="Bio"
+              />
+            </FloatingLabel>
           </Modal.Body>
         </Form>
         <Modal.Footer>
@@ -83,6 +94,7 @@ const UpdateArtist = ({ artist, save }) => {
                 name,
                 phone,
                 email,
+                bio,
               });
               handleClose();
             }}

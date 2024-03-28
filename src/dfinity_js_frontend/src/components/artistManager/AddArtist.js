@@ -18,9 +18,9 @@ const AddArtist = ({ save }) => {
 
   return (
     <>
-      <div onClick={handleShow} className="text-success-outline">
+      <Button onClick={handleShow} className="btn btn-success-outline">
         <i className="bi bi-plus "></i> New Artist
-      </div>
+      </Button>
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>New Artist</Modal.Title>

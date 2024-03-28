@@ -13,7 +13,6 @@ import {
   getFollowingContents,
   likeContent,
 } from "../../utils/contentManager";
-import { createArtist } from "../../utils/artistManager";
 import AddContent from "./AddContent";
 
 const Contents = () => {

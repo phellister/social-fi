@@ -324,6 +324,16 @@ export default Canister({
   }),
 
   // get artist by owner
+  getArtistByOwner: query([], Result(Artist, ErrorType), () => {
+    const principal = ic.caller();
+    const artistOpt = artistsStorage.values().filter((artist) => {
+      return artist.principal.toText() === principal.toText();
+    });
+    if (artistOpt.length === 0) {
+      return Err({ NotFound: `artist with principal=${principal} not found` });
+    }
+    return Ok(artistOpt[0]);
+  }),
 
   // get contents reserved by a artist
   getArtistContents: query([text], Vec(Content), (id) => {
@@ -379,25 +389,30 @@ export default Canister({
       return client.principal.toText() === ic.caller().toText();
     });
     if (clientOpt.length === 0) {
-      return Err({
-        NotFound: `client with principal=${ic.caller()} not found`,
-      });
+      const client = {
+        id: uuidv4(),
+        principal: ic.caller(),
+        following: [artist.id],
+        contents: [],
+      };
+      clientsStorage.insert(client.id, client);
+    } else {
+      const client = clientOpt[0];
+      const updatedClient = {
+        ...client,
+        following: [...client.following, artist.id],
+      };
+      clientsStorage.insert(client.id, updatedClient);
     }
-    const client = clientOpt[0];
-    const updatedClient = {
-      ...client,
-      following: [...client.following, artist.id],
-    };
 
     artist.followers += 1n;
 
     artistsStorage.insert(artist.id, artist);
-    clientsStorage.insert(client.id, updatedClient);
     return Ok(artist);
   }),
 
   // get user artists
-  getFollowingArtists: query([], Vec(Artist), () => {
+  getFollowingArtists: query([], Vec(ArtistReturn), () => {
     const clientOpt = clientsStorage.values().filter((client) => {
       return client.principal.toText() === ic.caller().toText();
     });
@@ -405,8 +420,18 @@ export default Canister({
       return [];
     }
     const client = clientOpt[0];
-    return artistsStorage.values().filter((artist) => {
+    const artists = artistsStorage.values().filter((artist) => {
       return client.following.includes(artist.id);
+    });
+
+    return artists.map((artist) => {
+      const artistContents = contentsStorage.values().filter((content) => {
+        return artist.contents.includes(content.id);
+      });
+      return {
+        ...artist,
+        contents: artistContents,
+      };
     });
   }),
 
@@ -424,7 +449,7 @@ export default Canister({
     });
   }),
 
-  createReservePay: update(
+  createSubscriptionPay: update(
     [text],
     Result(ReserveSubscription, ErrorType),
     (contentId) => {
@@ -462,18 +487,13 @@ export default Canister({
 
       content.updatedAt = Some(new Date().toISOString());
 
-      const clientContent = {
-        ...content,
-        id: uuidv4(),
-        principal: ic.caller(),
-      };
-
       if (clientOpt.length === 0) {
         // create default client
         const client = {
           id: uuidv4(),
           principal: ic.caller(),
-          contents: [clientContent.id],
+          following: [],
+          contents: [content.id],
         };
         clientsStorage.insert(client.id, client);
       } else {
@@ -482,12 +502,10 @@ export default Canister({
         const client = clientOpt[0];
         const updatedClient = {
           ...client,
-          contents: [...client.contents, clientContent.id],
+          contents: [...client.contents, content.id],
         };
         clientsStorage.insert(client.id, updatedClient);
       }
-
-      contentsStorage.insert(clientContent.id, clientContent);
 
       contentsStorage.insert(content.id, updatedContent);
 

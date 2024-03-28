@@ -1,13 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Card, Col, Badge, Stack } from "react-bootstrap";
+import { Card, Col, Badge, Stack, Button } from "react-bootstrap";
 import UpdateArtist from "./UpdateArtist";
 import { Principal } from "@dfinity/principal";
 import UpdateContent from "../contentManager/UpdateContent";
 
-const Artist = ({ artist, update, updateContent }) => {
-  const { id, userName, email, phone, principal, profilePic, contents } =
-    artist;
+const Artist = ({ artist, update, updateContent, follow }) => {
+  const {
+    id,
+    userName,
+    followers,
+    email,
+    phone,
+    principal,
+    profilePic,
+    contents,
+  } = artist;
 
   const artistPrincipal = window.auth.principalText;
   const sameOwner = Principal.from(principal).toText() === artistPrincipal;
@@ -29,8 +37,22 @@ const Artist = ({ artist, update, updateContent }) => {
               height="80"
             />
             <Card.Title>Name: {userName}</Card.Title>
-            {sameOwner && <UpdateArtist artist={artist} save={update} />}
+            {sameOwner ? (
+              <UpdateArtist artist={artist} save={update} />
+            ) : (
+              <Button
+                className="btn btn-outline-success text-white"
+                onClick={() => {
+                  follow(artist.id);
+                }}
+              >
+                Follow
+              </Button>
+            )}
           </Stack>
+          <Badge bg="secondary" className="ms-auto">
+            {Number(followers)} Followers
+          </Badge>
           <Card.Text>Id: {id}</Card.Text>
           <Card.Text className="flex-grow-1 ">Email: {email}</Card.Text>
           <Card.Text className="flex-grow-1 ">Phone: {phone}</Card.Text>
@@ -70,7 +92,7 @@ const Artist = ({ artist, update, updateContent }) => {
                     date: {content.createdAt}
                   </Card.Text>
                   <Card.Text className="flex-grow-1 ">
-                    Likes: {content.likes}
+                    Subs: {Number(content.subscriptions)}
                   </Card.Text>
                   <Card.Text className="flex-grow-1">
                     Tags:

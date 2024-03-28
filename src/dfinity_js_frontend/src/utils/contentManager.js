@@ -59,12 +59,10 @@ export async function getAddressFromPrincipal(principal) {
   );
 }
 
-export async function subscribe(contentId, amount) {
-  const amountInt = parseInt(amount, 10);
+export async function subscribe(contentId) {
   const contentManagerCanister = window.canister.contentManager;
-  const orderResponse = await contentManagerCanister.createReservePay(
-    contentId,
-    amountInt
+  const orderResponse = await contentManagerCanister.createSubscriptionPay(
+    contentId
   );
 
   console.log(orderResponse);

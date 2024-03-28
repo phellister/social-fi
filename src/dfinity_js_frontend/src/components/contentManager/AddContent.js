@@ -4,10 +4,10 @@ import { Button, Modal, Form, FloatingLabel } from "react-bootstrap";
 
 const AddContent = ({ save }) => {
   const [title, setTitle] = useState("");
-  const [cover, setcover] = useState("");
+  const [cover, setCover] = useState("");
   const [description, setDescription] = useState("");
   const [mediaType, setMediaType] = useState("");
-  const [category, setcategory] = useState("");
+  const [category, setCategory] = useState("");
   const [tags, setTags] = useState([]);
   const [subscriptionFee, setSubscriptionFee] = useState(0);
   const isFormFilled = () =>
@@ -26,9 +26,12 @@ const AddContent = ({ save }) => {
 
   return (
     <>
-      <div onClick={handleShow} className="text-success">
+      <Button
+        onClick={handleShow}
+        className="btn btn-outline-success text-white"
+      >
         <i className="bi bi-plus"></i> Add Content
-      </div>
+      </Button>
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>New Content</Modal.Title>
@@ -57,7 +60,7 @@ const AddContent = ({ save }) => {
                 type="text"
                 placeholder="category"
                 onChange={(e) => {
-                  setcategory(e.target.value);
+                  setCategory(e.target.value);
                 }}
               />
             </FloatingLabel>
@@ -69,27 +72,23 @@ const AddContent = ({ save }) => {
               <Form.Control
                 type="text"
                 onChange={(e) => {
-                  setcover(e.target.value);
+                  setCover(e.target.value);
                 }}
                 placeholder="Enter cover url"
               />
             </FloatingLabel>
             <FloatingLabel
               controlId="mediaType"
-              label="Is Tokenized"
+              label="MediaType"
               className="mb-3"
             >
-              <select
+              <Form.Control
+                type="text"
                 onChange={(e) => {
                   setMediaType(e.target.value);
                 }}
-                className="form-select"
-                aria-label="Default select example"
-              >
-                <option defaultValue="">select</option>
-                <option value={"true"}>True</option>
-                <option value={"false"}>False</option>
-              </select>
+                placeholder="Enter cover url"
+              />
             </FloatingLabel>
             <FloatingLabel
               controlId="inputDescription"
